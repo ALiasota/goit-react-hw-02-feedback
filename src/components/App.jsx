@@ -1,4 +1,8 @@
 import React, {Component} from "react";
+import Statistics from "./Statistics";
+import FeedbackOptions from "./FeedbackOptions";
+import Section from "./Section";
+import Notification from "./Notification";
 
 class App extends Component {
        
@@ -10,46 +14,27 @@ class App extends Component {
   
   setEstimate = (estimate) => {
       this.setState(prevState => ({[estimate]: prevState[estimate]+1,}));        
-  }
-
-  
-
-  
+  } 
 
   render() {
-      const estimates = Object.values(this.state);
-      
-      const countTotalFeedback = () => { return estimates.reduce(
-          (total, estimate) => total+estimate, 0
+    const countFeedback = () => { return Object.values(this.state).reduce(
+        (total, estimate) => total+estimate, 0
       )};
-      const countPositiveFeedbackPercentage =Math.round(estimates[0] / countTotalFeedback() * 100);
       
       return(
-          <div>
-              <h2>Please leave feed back</h2>
-              <div>
-                  {Object.keys(this.state).map((estimate) => {
-                      return(
-                          <button
-                              key = {estimate}
-                              type="button"
-                              onClick={()=> this.setEstimate(estimate)}
-                              >
-                                  {estimate}
-                              </button>
-                      )
-                  })}
-              </div>
-              <h2>Statistics</h2>
-              {Object.keys(this.state).map((estimate) => {
-                  return(
-                      <p 
-                      key = {estimate}>{estimate}:{this.state[estimate]}</p>
-                  )
-              })}
-              <p>Total: {countTotalFeedback()}</p>
-              <p>{estimates[0]?`Positive feedback: ${countPositiveFeedbackPercentage}%`:'No positive feedback'}</p>
-          </div>
+          <>
+            <Section text='Please leave feed back'>
+              <FeedbackOptions 
+                    feedbacks = {this.state} 
+                    onLeaveFeedback={this.setEstimate}/>
+            </Section>
+            { countFeedback()?
+            <Section text='Statistics'>              
+              <Statistics feedbacks = {this.state}  />
+            </Section>:
+            <Notification text='There is no feedback'/>
+            } 
+            </>
       )
       
   }

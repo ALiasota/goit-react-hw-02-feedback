@@ -9,14 +9,21 @@ class Feedback extends Component {
       }
     
     setEstimate = (estimate) => {
-        this.setState(prevState => ({[estimate]: prevState[estimate]+1,}))        
+        this.setState(prevState => ({[estimate]: prevState[estimate]+1,}));        
     }
 
     
 
-    countPositiveFeedbackPercentage = () => {} 
+    
 
     render() {
+        const estimates = Object.values(this.state);
+        
+        const countTotalFeedback = () => { return estimates.reduce(
+            (total, estimate) => total+estimate, 0
+        )};
+        const countPositiveFeedbackPercentage =Math.round(estimates[0] / countTotalFeedback() * 100);
+        
         return(
             <div>
                 <h2>Please leave feed back</h2>
@@ -40,6 +47,8 @@ class Feedback extends Component {
                         key = {estimate}>{estimate}:{this.state[estimate]}</p>
                     )
                 })}
+                <p>Total: {countTotalFeedback()}</p>
+                <p>{estimates[0]?`Positive feedback: ${countPositiveFeedbackPercentage}%`:'No positive feedback'}</p>
             </div>
         )
         

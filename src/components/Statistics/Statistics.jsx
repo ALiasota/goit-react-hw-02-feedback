@@ -1,4 +1,4 @@
-
+import propTypes from 'prop-types';
 
 const Statistics = ({feedbacks}) => {    
         const estimates = Object.values(feedbacks);  
@@ -22,5 +22,10 @@ const Statistics = ({feedbacks}) => {
         )
     
 }
+
+Statistics.propTypes = {  
+  feedbacks: propTypes.objectOf(propTypes.number).isRequired
+}
+    
 
 export default Statistics;

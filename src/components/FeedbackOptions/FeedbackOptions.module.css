@@ -1,0 +1,9 @@
+.btn {
+  margin-left: 10px;
+}
+
+.btn:hover,
+.btn:focus {
+  cursor: pointer;
+  background-color: aqua;
+}

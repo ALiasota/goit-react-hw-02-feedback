@@ -15,20 +15,15 @@ class App extends Component {
     this.setState(prevState => ({ [estimate]: prevState[estimate] + 1 }));
   };
 
-  render() {
-    const countFeedback = () => {
-      return Object.values(this.state).reduce(
-        (total, estimate) => total + estimate,
-        0
-      );
-    };
-    const feedbacks = Object.keys(this.state);
+  countTotalFeedback = () => {
     const estimates = Object.values(this.state);
-    function countTotalFeedback() {
-      return estimates.reduce((total, estimate) => total + estimate, 0);
-    }
-    const total = countTotalFeedback();
-    const positivePercentage = Math.round((estimates[0] / total) * 100);
+    return estimates.reduce((total, estimate) => total + estimate, 0);
+  };
+
+  render() {
+    const feedbacks = Object.keys(this.state);
+    const total = this.countTotalFeedback();
+    const positivePercentage = Math.round((this.state.good / total) * 100);
 
     return (
       <>
@@ -38,12 +33,12 @@ class App extends Component {
             onLeaveFeedback={this.setEstimate}
           />
         </Section>
-        {countFeedback() ? (
+        {total > 0 ? (
           <Section text="Statistics">
             <Statistics
-              good={estimates[0]}
-              neutral={estimates[1]}
-              bad={estimates[2]}
+              good={this.state.good}
+              neutral={this.state.neutral}
+              bad={this.state.bad}
               total={total}
               positivePercentage={positivePercentage}
             />
